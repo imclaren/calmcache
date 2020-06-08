@@ -1,7 +1,7 @@
 # calmcache
 calmcache is a golang disk cache ([GoDoc](https://godoc.org/github.com/imclaren/calmcache)).  The filesystem cache is managed via a sqlite database.
 
-calmcache reads and writes directly to files, and does not require values to be saved in memory.  For example:
+calmcache reads and writes directly from and to files, and does not require values to be saved in memory.  For example:
 
 ```
 func putAndGetBytes(key string, value []byte) {
