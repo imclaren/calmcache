@@ -5,7 +5,7 @@ calmcache does not require values to be saved to memory.  For example:
 
 ```
 func putAndGetBytes(key string, value []byte) {
-	c, err := Open(cachePath)
+	c, err := calmcache.Open(cachePath)
 	if err != nil {
 		return err
 	}
