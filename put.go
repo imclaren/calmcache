@@ -11,6 +11,7 @@ import (
 )
 
 // Put puts the contents of a byte slice in a bucket.
+// If the bucket already contains a value for a given key, OK returns false and the existing value is not overwritten.
 // Use PutWithFile or PutWithReader instead to avoid holding the bytes in memory
 func (c *Cache) Put(bucket, key string, value []byte) (OK bool, err error) {
 	c.mu.Lock()
@@ -46,6 +47,7 @@ func (c *Cache) Put(bucket, key string, value []byte) (OK bool, err error) {
 }
 
 // PutWithFile puts the contents of a file at the provided path in a bucket
+// If the bucket already contains a value for a given key, OK returns false and the existing value is not overwritten.
 func (c *Cache) PutWithFile(bucket, key string, fullPath string) (OK bool, err error) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
@@ -63,6 +65,7 @@ func (c *Cache) PutWithFile(bucket, key string, fullPath string) (OK bool, err e
 }
 
 // PutWithReader puts the contents of an io.Reader in a bucket
+// If the bucket already contains a value for a given key, OK returns false and the existing value is not overwritten.
 func (c *Cache) PutWithReader(bucket, key string, r io.Reader, size int64) (OK bool, err error) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
