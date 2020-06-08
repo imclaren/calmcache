@@ -11,9 +11,12 @@ c, err := Open(cachePath)
 if err != nil {
 	log.Fatal(err)
 }
-_, err = c.Put(bucket, key, value)
+OK, err := c.Put(bucket, key, value)
 if err != nil {
 	log.Fatal(err)
+}
+if !OK {
+	log.Fatal(fmt.Errorf("key already contains a value - delete the key first if you want to overwrite the value"))
 }
 b, err := c.Get(bucket, key)
 if err != nil {
@@ -38,9 +41,12 @@ func putAndGetBytes(cachePath, bucket, key string, value []byte) {
 	defer c.Close()
 
 	// Put
-	_, err = c.PutWithReader(bucket, key, bytes.NewReader(value), int64(len(value)))
+	OK, err := c.PutWithReader(bucket, key, bytes.NewReader(value), int64(len(value)))
 	if err != nil {
 		return err
+	}
+	if !OK {
+		log.Fatal(fmt.Errorf("key already contains a value - delete the key first if you want to overwrite the value"))
 	}
 
 	// Get
