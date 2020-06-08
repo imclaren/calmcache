@@ -4,7 +4,7 @@ calmcache is a low memory golang disk cache ([GoDoc](https://godoc.org/github.co
 The filesystem cache is managed via a sqlite database, and does not require values to be saved to memory:
 
 ```
-func test(key string, value []byte) {
+func putAndGetBytes(key string, value []byte) {
 	c, err := Open(cachePath)
 	if err != nil {
 		return err
