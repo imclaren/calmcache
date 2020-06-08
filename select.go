@@ -25,7 +25,7 @@ func (c *Cache) exists(bucket, key string) (exists bool, err error) {
 	return i != nil, err
 }
 
-// AllKeys returs the keys for all items in the cache
+// AllKeys returs the keys for all items in a bucket
 func (c *Cache) AllKeys(bucket string) (allKeys []string, err error) {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
@@ -41,7 +41,7 @@ func (c *Cache) AllKeys(bucket string) (allKeys []string, err error) {
 	return allKeys, err
 }
 
-// Get gets the bytes of an item
+// Get gets the cached item bytes
 // Use GetPathAndLock / GetPathUnLock or GetToWriter instead to avoid holding the bytes in memory
 func (c *Cache) Get(bucket, key string) (value []byte, err error) {
 	c.mu.RLock()
@@ -95,7 +95,7 @@ func (c *Cache) getPath(bucket, key string) (OK bool, fullPath string, size int6
 	return true, fullPath, i.Size, nil
 }
 
-// GetToWriter gets the cached bytes as an io.Writer
+// GetToWriter gets the cached item bytes as an io.Writer
 func (c *Cache) GetToWriter(bucket, key string, w io.Writer) (OK bool, err error) {
 	OK, fullPath, size, err := c.GetPathAndLock(bucket, key)
 	if err != nil {
