@@ -1,7 +1,5 @@
 # calmcache
-calmcache is a golang disk cache ([GoDoc](https://godoc.org/github.com/imclaren/calmcache))
-
-It is designed to use a low amount of memory.
+calmcache is a golang disk cache ([GoDoc](https://godoc.org/github.com/imclaren/calmcache)).  It is designed to use a low amount of memory.
 
 The filesystem cache is managed via a sqlite database.  calmcache does not require values to be saved to memory.  For example:
 
