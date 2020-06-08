@@ -41,7 +41,7 @@ func (c *Cache) AllKeys(bucket string) (allKeys []string, err error) {
 	return allKeys, err
 }
 
-// Put gets the bytes of an item
+// Get gets the bytes of an item
 // Use GetPathAndLock / GetPathUnLock or GetToWriter instead to avoid holding the bytes in memory
 func (c *Cache) Get(bucket, key string) (value []byte, err error) {
 	c.mu.RLock()
@@ -70,7 +70,7 @@ func (c *Cache) GetPathAndLock(bucket, key string) (OK bool, fullPath string, si
 	return OK, fullPath, size, err
 }
 
-// GetPathUnlock unlocks the cache
+// GetPathUnlock unlocks the cache.
 // Use this when finished with the item accessed using GetPathAndLock 
 func (c *Cache) GetPathUnlock() {
 	c.mu.RUnlock()

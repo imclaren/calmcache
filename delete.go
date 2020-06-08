@@ -11,7 +11,7 @@ func (c *Cache) DeleteCache() (err error) {
 	return c.FC.DeleteCache()
 }
 
-// Deletebucket deletes the bucket
+// DeleteBucket deletes the bucket
 func (c *Cache) DeleteBucket(bucket string) error {
 	c.mu.Lock()
 	defer c.mu.Unlock()

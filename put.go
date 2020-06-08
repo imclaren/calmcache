@@ -10,7 +10,7 @@ import (
 	"github.com/imclaren/calmcache/filecache"
 )
 
-// Put puts the contents of a byte slice in a bucket
+// Put puts the contents of a byte slice in a bucket.
 // Use PutWithFile or PutWithReader instead to avoid holding the bytes in memory
 func (c *Cache) Put(bucket, key string, value []byte) (OK bool, err error) {
 	c.mu.Lock()

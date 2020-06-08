@@ -26,7 +26,7 @@ type Cache struct {
 	FC 					*filecache.FileCache
 }
 
-// Open opens the and initiates the cache
+// Open opens the and initiates the cache. 
 // Note that this is not thread safe.  Use Cache.Open for thread safe openining of the Cache.
 func Open(path string) (c Cache, err error) {
 	DBPath := filepath.Join(path, DBName)

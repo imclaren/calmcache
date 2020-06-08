@@ -16,6 +16,8 @@ const (
 	Terabyte = Gigabyte * int64(1024)
 )
 
+// Note the tests in this file were updated from https://github.com/jrick/bbolt/tree/memfix
+
 func createDb(t *testing.T) (Cache, func()) {
 	// First, create a temporary directory to be used for the duration of
 	// this test.

@@ -161,7 +161,7 @@ func indexSQLString(dbType, indexType string, isUnique bool, tableName string, i
 	}
 } 
 
-// Drop table drops the database table
+// DropTable drops the database table
 func (db *DB) DropTable() error {
 	db.Mutex.Lock()
 	defer db.Mutex.Unlock()

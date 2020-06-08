@@ -8,7 +8,7 @@ import (
 	"github.com/imclaren/fs"
 )
 
-// WriteBytesToFile writes the contents of []byte to a file at filepath
+// WriteBytesToFile writes the contents of []byte to a file at filepath.
 // Use WriteReaderToFile instead to avoid holding the bytes in memory
 func (fc *FileCache) WriteBytesToFile(fullPath string, b []byte) error {
 	fc.mu.Lock()

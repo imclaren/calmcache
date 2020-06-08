@@ -106,7 +106,7 @@ func (db *DB) AllInBucketCount(bucket string) (count int, err error) {
 	return c, nil
 }
 
-// AllInBucketCount returns the number of items in the cache
+// AllCount returns the number of items in the cache
 func (db *DB) AllCount() (count int, err error) {
 	db.Mutex.RLock()
 	defer db.Mutex.RUnlock()

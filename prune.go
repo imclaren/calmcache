@@ -37,7 +37,7 @@ func (c *Cache) PruneToSize(bucket string, targetSize int64) error {
 	return nil
 }
 
-// PruneToSize prunes the bucket of all items with an access time that is earlier than the time.Duration provided
+// PruneOlderThan prunes the bucket of all items with an access time that is earlier than the time.Duration provided
 func (c *Cache) PruneOlderThan(bucket string, d time.Duration) error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
