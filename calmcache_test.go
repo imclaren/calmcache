@@ -111,16 +111,13 @@ func (c *Cache) TestPut(t *testing.T) {
 	testCases := []struct {
 		keys       []string
 		bytes      []byte
-		beforeKeys []string
-		popKey     string
-		afterKeys  []string
 	}{
-		{[]string{"testkey"}, []byte("123"), []string{"testkey"}, "testkey", []string{}},
-		{[]string{"testkey", "testkey2"}, []byte("123"), []string{"testkey", "testkey2"}, "testkey", []string{"testkey2"}},
-		{[]string{"testkey", "testkey2", "testkey3"}, []byte("123"), []string{"testkey", "testkey2", "testkey3"}, "testkey", []string{"testkey2", "testkey3"}},
+		{[]string{"testkey"}, []byte("123")},
+		{[]string{"testkey", "testkey2"}, []byte("123")},
+		{[]string{"testkey", "testkey2", "testkey3"}, []byte("123")},
 
-		{[]string{"testkey"}, []byte("123456"), []string{"testkey"}, "testkey", []string{}},
-		{[]string{"testkey"}, []byte(""), []string{"testkey"}, "testkey", []string{}},
+		{[]string{"testkey"}, []byte("123456")},
+		{[]string{"testkey"}, []byte("")},
 	}
 
 	for _, testCase := range testCases {
@@ -234,16 +231,13 @@ func (c *Cache) TestReaderAndGetPath(t *testing.T) {
 	testCases := []struct {
 		keys       []string
 		bytes      []byte
-		beforeKeys []string
-		popKey     string
-		afterKeys  []string
 	}{
-		{[]string{"testkey"}, []byte("123"), []string{"testkey"}, "testkey", []string{}},
-		{[]string{"testkey", "testkey2"}, []byte("123"), []string{"testkey", "testkey2"}, "testkey", []string{"testkey2"}},
-		{[]string{"testkey", "testkey2", "testkey3"}, []byte("123"), []string{"testkey", "testkey2", "testkey3"}, "testkey", []string{"testkey2", "testkey3"}},
+		{[]string{"testkey"}, []byte("123")},
+		{[]string{"testkey", "testkey2"}, []byte("123")},
+		{[]string{"testkey", "testkey2", "testkey3"}, []byte("123")},
 
-		{[]string{"testkey"}, []byte("123456"), []string{"testkey"}, "testkey", []string{}},
-		{[]string{"testkey"}, []byte(""), []string{"testkey"}, "testkey", []string{}},
+		{[]string{"testkey"}, []byte("123456")},
+		{[]string{"testkey"}, []byte("")},
 	}
 
 	for _, testCase := range testCases {

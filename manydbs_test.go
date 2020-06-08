@@ -1,7 +1,6 @@
 package calmcache
 
 import (
-	"fmt"
 	"io/ioutil"
 	"math/rand"
 	"os"
@@ -40,27 +39,24 @@ func createDb(t *testing.T) (Cache, func()) {
 	return bdb, cleanup
 }
 
-func createAndPutKeys(t *testing.T) {
-	t.Parallel()
-
+func createAndPutKeys(t *testing.T, numRounds int, size int64) {
 	db, cleanup := createDb(t)
 	defer cleanup()
 
-	bucketName := "bucket"
-
-	for i := 0; i < 100; i++ {
-		//var key [16]byte
-		var key [25*Megabyte]byte
-
-		rand.Read(key[:])
-		if _, err := db.Put(bucketName, strconv.Itoa(i), key[:]); err != nil {
+	for i := 0; i < numRounds; i++ {
+	    value := make([]byte, size)
+	    rand.Read(value)
+		if _, err := db.Put("bucket", strconv.Itoa(i), value); err != nil {
 			t.Fatal(err)
 		}
 	}
 }
 
 func TestManyDBs(t *testing.T) {
-	for i := 0; i < 100; i++ {
-		t.Run(fmt.Sprintf("%d", i), createAndPutKeys)
+	for i := 0; i < 12; i++ {
+		createAndPutKeys(t, 12, 16)
+	}
+	for i := 0; i < 10; i++ {
+		createAndPutKeys(t, 10, 25*Megabyte)
 	}
 }
