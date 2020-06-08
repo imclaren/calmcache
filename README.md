@@ -1,7 +1,9 @@
 # calmcache
-calmcache is a low memory golang disk cache ([GoDoc](https://godoc.org/github.com/imclaren/calmcache))
+calmcache is a golang disk cache ([GoDoc](https://godoc.org/github.com/imclaren/calmcache))
 
-The filesystem cache is managed via a sqlite database, and does not require values to be saved to memory:
+It is designed to use a low amount of memory.
+
+The filesystem cache is managed via a sqlite database.  calmcache does not require values to be saved to memory.  For example:
 
 ```
 func putAndGetBytes(key string, value []byte) {
