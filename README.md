@@ -77,6 +77,7 @@ func getAllInBucket(cachePath, bucket string) ([]cacheitem.Item, error) {
 		return nil, err
 	}
 	defer c.Close()
+	
 	c.DB.Mutex.RLock()
 	defer c.DB.Mutex.RUnlock()
 	sqlString := "SELECT * FROM cache WHERE bucket = ? ORDER BY key ASC"
