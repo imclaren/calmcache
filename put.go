@@ -6,7 +6,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/imclaren/calmcache/dbcache"
+	"github.com/imclaren/calmcache/cacheitem"
 	"github.com/imclaren/calmcache/filecache"
 )
 
@@ -39,7 +39,7 @@ func (c *Cache) Put(bucket, key string, value []byte) (OK bool, err error) {
 	if err != nil {
 		return false, err
 	}
-	err = c.DB.Insert(dbcache.NewItem(bucket, key, int64(len(value)), 0, time.Time{}))
+	err = c.DB.Insert(cacheitem.New(bucket, key, int64(len(value)), 0, time.Time{}))
 	if err != nil {
 		return false, err
 	}
@@ -96,7 +96,7 @@ func (c *Cache) putWithReader(bucket, key string, r io.Reader, size int64) (OK b
 	if err != nil {
 		return false, err
 	}
-	err = c.DB.Insert(dbcache.NewItem(bucket, key, size, 0, time.Time{}))
+	err = c.DB.Insert(cacheitem.New(bucket, key, size, 0, time.Time{}))
 	if err != nil {
 		return false, err
 	}

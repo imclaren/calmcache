@@ -137,7 +137,7 @@ func (c *Cache) TestPut(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		assert.Equal(t, testCase.beforeKeys, allKeys)
+		assert.Equal(t, testCase.keys, allKeys)
 	}
 }
 
@@ -269,7 +269,7 @@ func (c *Cache) TestReaderAndGetPath(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		assert.Equal(t, testCase.beforeKeys, allKeys)
+		assert.Equal(t, testCase.keys, allKeys)
 	}
 }
 

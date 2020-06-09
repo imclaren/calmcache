@@ -1,7 +1,9 @@
 package dbcache
 
+import "github.com/imclaren/calmcache/cacheitem"
+
 // Insert inserts an item in the database
-func (db *DB) Insert(i Item) error {
+func (db *DB) Insert(i cacheitem.Item) error {
 	db.Mutex.Lock()
 	defer db.Mutex.Unlock()
 

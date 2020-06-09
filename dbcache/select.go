@@ -1,6 +1,7 @@
 package dbcache
 
 import (
+	"github.com/imclaren/calmcache/cacheitem"
 	"database/sql"
 	"strings"
 	"fmt"
@@ -8,7 +9,7 @@ import (
 )
 
 // GetItem returns a database item
-func (db *DB) GetItem(bucket, key string) (i *Item, err error) {
+func (db *DB) GetItem(bucket, key string) (i *cacheitem.Item, err error) {
 	db.Mutex.RLock()
 	defer db.Mutex.RUnlock()
 
@@ -16,7 +17,7 @@ func (db *DB) GetItem(bucket, key string) (i *Item, err error) {
 		return nil, fmt.Errorf("empty bucket (%s) or key (%s)", bucket, key)
 	}
 	sqlString := "SELECT * FROM cache WHERE bucket = ? AND key = ?"
-	var newItem Item 
+	var newItem cacheitem.Item 
 	err = db.QueryRowx(db.Rebind(sqlString), bucket, key).StructScan(&newItem)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -28,23 +29,23 @@ func (db *DB) GetItem(bucket, key string) (i *Item, err error) {
 }
 
 // GetAllInBucket returns all of the database items in a bucket
-func (db *DB) GetAllInBucket(bucket string) ([]Item, error) {
+func (db *DB) GetAllInBucket(bucket string) ([]cacheitem.Item, error) {
 	db.Mutex.RLock()
 	defer db.Mutex.RUnlock()
 
 	sqlString := "SELECT * FROM cache WHERE bucket = ? ORDER BY key ASC"
-	var items []Item
+	var items []cacheitem.Item
 	err := db.Select(&items, db.Rebind(sqlString), bucket)
 	return items, err
 }
 
 // GetOldestInBucket returns the oldest (i.e. last accessed) database item
-func (db *DB) GetOldestInBucket(bucket string) (i *Item, err error) {
+func (db *DB) GetOldestInBucket(bucket string) (i *cacheitem.Item, err error) {
 	db.Mutex.RLock()
 	defer db.Mutex.RUnlock()
 
 	sqlString := "SELECT * FROM cache WHERE bucket = ? ORDER BY updated_at ASC LIMIT 1"
-	var newItem Item 
+	var newItem cacheitem.Item 
 	err = db.QueryRowx(db.Rebind(sqlString), bucket).StructScan(&newItem)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -56,18 +57,18 @@ func (db *DB) GetOldestInBucket(bucket string) (i *Item, err error) {
 }
 
 // AllInBucketOlderThan returns all database items that are older than (i.e. last accessed before) the provided time.Duration
-func (db *DB) AllInBucketOlderThan(bucket string, d time.Duration) (items []Item, err error) {
+func (db *DB) AllInBucketOlderThan(bucket string, d time.Duration) (items []cacheitem.Item, err error) {
 	db.Mutex.RLock()
 	defer db.Mutex.RUnlock()
 
 	targetTS := time.Now().Add(-d)
 	sqlString := "SELECT * FROM cache WHERE bucket = ? AND updated_at < ? ORDER BY updated_at ASC"
 
-	var newItems []Item
+	var newItems []cacheitem.Item
 	err = db.Select(&items, db.Rebind(sqlString), bucket, targetTS)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return []Item{}, nil
+			return []cacheitem.Item{}, nil
 		}
 		return nil, err
 	}
@@ -75,12 +76,12 @@ func (db *DB) AllInBucketOlderThan(bucket string, d time.Duration) (items []Item
 }
 
 // All returns all database items in the cache
-func (db *DB) All() ([]Item, error) {
+func (db *DB) All() ([]cacheitem.Item, error) {
 	db.Mutex.RLock()
 	defer db.Mutex.RUnlock()
 
 	sqlString := "SELECT * FROM cache"
-	var items []Item
+	var items []cacheitem.Item
 	err := db.Select(&items, db.Rebind(sqlString))
 	return items, err
 }

@@ -1,10 +1,10 @@
-package dbcache
+package cacheitem
 
 import (
 	"time"
 )
 
-// Item is a database item struct
+// Item is a cache item
 type Item struct {
 	Id              int
 	Bucket 			string 		`db:"bucket"`
@@ -16,8 +16,8 @@ type Item struct {
 	UpdatedAt       time.Time 	`db:"updated_at"`
 }
 
-// NewItem returns a new database item struct
-func NewItem(bucket, key string, size, accessCount int64, expiresAt time.Time) Item {
+// New returns a new cache item
+func New(bucket, key string, size, accessCount int64, expiresAt time.Time) Item {
 	return Item{
 		//Id              int
 		Bucket: 		bucket,
