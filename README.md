@@ -30,9 +30,9 @@ if string(value) != string(b) {
 	log.Fatal(fmt.Errorf("returned value error"))
 }
 ```
-## Getting and putting bytes without saving in memory
-calmcache writes and reads directly to and from files, and does not require values to be saved in memory.  For example:
 
+## Getting and putting bytes without saving byte slices in memory
+calmcache allows putting bytes into the cache using an io.Reader, and getting bytes from the cache by providing access to an os.File or io.Writer.  For example:
 ```
 func putAndGetBytes(cachePath, bucket, key string, value []byte) {
 	c, err := calmcache.Open(cachePath)
