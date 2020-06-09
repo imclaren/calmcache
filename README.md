@@ -31,7 +31,7 @@ if string(value) != string(b) {
 }
 ```
 
-## Getting and putting bytes without saving byte slices in memory
+## Low memory put and get
 calmcache allows putting bytes into the cache using an io.Reader, and getting bytes from the cache by providing access to an os.File or io.Writer.  For example:
 ```
 func putAndGetBytes(cachePath, bucket, key string, value []byte) {
@@ -68,3 +68,24 @@ func putAndGetBytes(cachePath, bucket, key string, value []byte) {
 	}
 }
 ```
+## sqlite database access
+
+```
+func getAllInBucket(cachePath, bucket string) ([]cacheitem.Item, error) {
+	c, err := calmcache.Open(cachePath)
+	if err != nil {
+		return nil, err
+	}
+	defer c.Close()
+	c.DB.Mutex.RLock()
+	defer c.DB.Mutex.RUnlock()
+	sqlString := "SELECT * FROM cache WHERE bucket = ? ORDER BY key ASC"
+	var items []cacheitem.Item
+	err := c.DB.Select(&items, c.DB.Rebind(sqlString), bucket)
+	if err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+
