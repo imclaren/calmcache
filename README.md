@@ -30,6 +30,13 @@ if b == nil {
 if string(value) != string(b) {
 	log.Fatal(fmt.Errorf("returned value error"))
 }
+OK, err = c.Delete(bucket, key)
+if err != nil {
+	return err
+}
+if !OK {
+	return fmt.Errorf("delete key error")
+}
 ```
 
 ## Low memory put and get
@@ -67,13 +74,6 @@ func putAndGetBytes(cachePath, bucket, key string, value []byte) {
 	}
 	if string(b) != string(value) {
 		return fmt.Errorf("returned value error")
-	}
-	OK, err = c.Delete(bucket, key)
-	if err != nil {
-		return err
-	}
-	if !OK {
-		return fmt.Errorf("delete key error")
 	}
 }
 ```
