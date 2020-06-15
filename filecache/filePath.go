@@ -10,8 +10,8 @@ import (
 
 // FilePath gets the file path of the cached file, and creates the required subfolders if necessary
 func (fc *FileCache) FilePath(bucket, key string, makeDir bool) (filePath string, err error) {
-	fc.mu.Lock()
-	defer fc.mu.Unlock()
+	fc.Lock()
+	defer fc.Unlock()
 
 	subDirs, err := fc.subDirs(bucket, key, DirLength, true)
 	if err != nil {

@@ -11,8 +11,8 @@ import (
 // WriteBytesToFile writes the contents of []byte to a file at filepath.
 // Use WriteReaderToFile instead to avoid holding the bytes in memory
 func (fc *FileCache) WriteBytesToFile(fullPath string, b []byte) error {
-	fc.mu.Lock()
-	defer fc.mu.Unlock()
+	fc.Lock()
+	defer fc.Unlock()
 
 	fullPath, err := fs.RealPath(fullPath)
 	if err != nil {
@@ -43,8 +43,8 @@ func (fc *FileCache) WriteBytesToFile(fullPath string, b []byte) error {
 
 // WriteReaderToFile streams the contents of an io.Reader to a file at filepath
 func (fc *FileCache) WriteReaderToFile(fullPath string, r io.Reader, size int64) error {
-	fc.mu.Lock()
-	defer fc.mu.Unlock()
+	fc.Lock()
+	defer fc.Unlock()
 
 	fullPath, err := fs.RealPath(fullPath)
 	if err != nil {

@@ -7,8 +7,8 @@ import (
 
 // DeleteCache deletes all items in the cache
 func (fc *FileCache) DeleteCache() error {
-	fc.mu.Lock()
-	defer fc.mu.Unlock()
+	fc.Lock()
+	defer fc.Unlock()
 
 	cachePath := filepath.Dir(fc.path)
 	return os.RemoveAll(cachePath)
@@ -16,8 +16,8 @@ func (fc *FileCache) DeleteCache() error {
 
 // DeleteBucket deletes all the items in a bucket
 func (fc *FileCache) DeleteBucket(bucket string) error {
-	fc.mu.Lock()
-	defer fc.mu.Unlock()
+	fc.Lock()
+	defer fc.Unlock()
 
 	bucketPath := filepath.Join(fc.path, bucket)
 	return os.RemoveAll(bucketPath)
@@ -25,8 +25,8 @@ func (fc *FileCache) DeleteBucket(bucket string) error {
 
 // Delete deletes an item
 func (fc *FileCache) Delete(bucket, key string) error {
-	fc.mu.Lock()
-	defer fc.mu.Unlock()
+	fc.Lock()
+	defer fc.Unlock()
 
 	// Delete subDirs
 	subDirs, err := fc.subDirs(bucket, key, DirLength, false)

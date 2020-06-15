@@ -12,7 +12,7 @@ const (
 
 // FileCache is the FileCache struct
 type FileCache struct {
-	mu  		sync.RWMutex
+	sync.RWMutex
 	path   		string
 	dirMode    	os.FileMode
 }
