@@ -2,6 +2,7 @@
 calmcache is a low memory golang disk cache ([GoDoc](https://godoc.org/github.com/imclaren/calmcache)).  The filesystem cache is managed using a sqlite database.
 
 ## Example
+
 ```
 cachePath := "/path/to/cachePath"
 bucket := "mybucket"
@@ -32,6 +33,7 @@ if string(value) != string(b) {
 ```
 
 ## Low memory put and get
+
 calmcache allows putting bytes into the cache using an io.Reader, and getting bytes from the cache by providing access to an os.File or io.Writer.  For example:
 ```
 func putAndGetBytes(cachePath, bucket, key string, value []byte) {
@@ -70,6 +72,7 @@ func putAndGetBytes(cachePath, bucket, key string, value []byte) {
 ```
 ## sqlite database access
 
+The sqlite database can be queried directly.  For example:
 ```
 func getAllInBucket(cachePath, bucket string) ([]cacheitem.Item, error) {
 	c, err := calmcache.Open(cachePath)
