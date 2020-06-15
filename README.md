@@ -92,6 +92,6 @@ func getAllInBucket(cachePath, bucket string) ([]cacheitem.Item, error) {
 	return items, nil
 }
 ```
-Once open, calmcache is desined be accessed concurrently.
+Once open, calmcache is designed be accessed concurrently.
 
 Calmcache has user accessible sync.RWMutexes at the top level (e.g. c.Lock() and c.Unlock()) and at the database and filecache levels (e.g. c.DB.Lock() and c.FC.Lock())
