@@ -81,31 +81,34 @@ func putAndGetBytes(cachePath, bucket, key string, value []byte) {
 
 The sqlite database can be queried directly.  For example:
 ```
-func getAllInBucket(cachePath, bucket string) ([]cacheitem.Item, error) {
-	c, err := calmcache.Open(cachePath)
+// getNewestInBucket returns the newest (i.e. most recently accessed) database item
+func getNewestInBucket(db *dbcache.DB, bucket string) (i *cacheitem.Item, err error) {
+	db.RLock()
+	defer db.RUnlock()
+
+	sqlString := "SELECT * FROM cache WHERE bucket = ? ORDER BY updated_at DESC LIMIT 1"
+	var newItem cacheitem.Item 
+	err = db.QueryRowx(db.Rebind(sqlString), bucket).StructScan(&newItem)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
 		return nil, err
 	}
-	defer c.Close()
-	
-	c.RLock()
-	defer c.RUnlock()
-	sqlString := "SELECT * FROM cache WHERE bucket = ? ORDER BY key ASC"
-	var items []cacheitem.Item
-	err := c.DB.Select(&items, c.DB.Rebind(sqlString), bucket)
-	if err != nil {
-		return nil, err
-	}
-	return items, nil
+	return &newItem, nil
 }
 
-items, err := getAllInBucket("/path/to/cachePath", "mybucket")
+c, err := calmcache.Open(cachePath)
 if err != nil {
 	return err
 }
-for _, i := range items {
-	fmt.Println(i.Key, i.Size, i.CreatedAt, i.UpdatedAt)
+defer c.Close()
+item, err := getNewestInBucket(&c.DB, bucket)
+if err != nil {
+	return err
 }
+fmt.Println(i.Key, i.Size, i.CreatedAt, i.UpdatedAt)
+
 ```
 Once open, calmcache is designed be accessed concurrently.
 
