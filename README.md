@@ -126,7 +126,6 @@ if err != nil {
 	return err
 }
 fmt.Println(i.Key, i.Size, i.CreatedAt, i.UpdatedAt)
-
 ```
 Once open, calmcache is designed be accessed concurrently.
 
