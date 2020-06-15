@@ -10,8 +10,8 @@ import (
 
 // GetItem returns a database item
 func (db *DB) GetItem(bucket, key string) (i *cacheitem.Item, err error) {
-	db.Mutex.RLock()
-	defer db.Mutex.RUnlock()
+	db.RLock()
+	defer db.RUnlock()
 
 	if bucket == "" || key == "" {
 		return nil, fmt.Errorf("empty bucket (%s) or key (%s)", bucket, key)
@@ -30,8 +30,8 @@ func (db *DB) GetItem(bucket, key string) (i *cacheitem.Item, err error) {
 
 // GetAllInBucket returns all of the database items in a bucket
 func (db *DB) GetAllInBucket(bucket string) ([]cacheitem.Item, error) {
-	db.Mutex.RLock()
-	defer db.Mutex.RUnlock()
+	db.RLock()
+	defer db.RUnlock()
 
 	sqlString := "SELECT * FROM cache WHERE bucket = ? ORDER BY key ASC"
 	var items []cacheitem.Item
@@ -41,8 +41,8 @@ func (db *DB) GetAllInBucket(bucket string) ([]cacheitem.Item, error) {
 
 // GetOldestInBucket returns the oldest (i.e. last accessed) database item
 func (db *DB) GetOldestInBucket(bucket string) (i *cacheitem.Item, err error) {
-	db.Mutex.RLock()
-	defer db.Mutex.RUnlock()
+	db.RLock()
+	defer db.RUnlock()
 
 	sqlString := "SELECT * FROM cache WHERE bucket = ? ORDER BY updated_at ASC LIMIT 1"
 	var newItem cacheitem.Item 
@@ -58,8 +58,8 @@ func (db *DB) GetOldestInBucket(bucket string) (i *cacheitem.Item, err error) {
 
 // AllInBucketOlderThan returns all database items that are older than (i.e. last accessed before) the provided time.Duration
 func (db *DB) AllInBucketOlderThan(bucket string, d time.Duration) (items []cacheitem.Item, err error) {
-	db.Mutex.RLock()
-	defer db.Mutex.RUnlock()
+	db.RLock()
+	defer db.RUnlock()
 
 	targetTS := time.Now().Add(-d)
 	sqlString := "SELECT * FROM cache WHERE bucket = ? AND updated_at < ? ORDER BY updated_at ASC"
@@ -77,8 +77,8 @@ func (db *DB) AllInBucketOlderThan(bucket string, d time.Duration) (items []cach
 
 // All returns all database items in the cache
 func (db *DB) All() ([]cacheitem.Item, error) {
-	db.Mutex.RLock()
-	defer db.Mutex.RUnlock()
+	db.RLock()
+	defer db.RUnlock()
 
 	sqlString := "SELECT * FROM cache"
 	var items []cacheitem.Item
@@ -88,8 +88,8 @@ func (db *DB) All() ([]cacheitem.Item, error) {
 
 // AllInBucketCount returns the number of items in a bucket
 func (db *DB) AllInBucketCount(bucket string) (count int, err error) {
-	db.Mutex.RLock()
-	defer db.Mutex.RUnlock()
+	db.RLock()
+	defer db.RUnlock()
 
 	sqlString := "SELECT COUNT(*) FROM cache WHERE bucket = ?"
 	var c int
@@ -109,8 +109,8 @@ func (db *DB) AllInBucketCount(bucket string) (count int, err error) {
 
 // AllCount returns the number of items in the cache
 func (db *DB) AllCount() (count int, err error) {
-	db.Mutex.RLock()
-	defer db.Mutex.RUnlock()
+	db.RLock()
+	defer db.RUnlock()
 
 	sqlString := "SELECT COUNT(*) FROM cache"
 	var c int
@@ -130,8 +130,8 @@ func (db *DB) AllCount() (count int, err error) {
 
 // BucketSize returns the total size (in bytes) of the items in a bucket
 func (db *DB) BucketSize(bucket string) (size int64, err error) {
-	db.Mutex.RLock()
-	defer db.Mutex.RUnlock()
+	db.RLock()
+	defer db.RUnlock()
 
 	sqlString := "SELECT SUM(size) FROM cache WHERE bucket = ?"
 	var s int64
@@ -151,8 +151,8 @@ func (db *DB) BucketSize(bucket string) (size int64, err error) {
 
 // Size returns the total size (in bytes) of the items in the cache 
 func (db *DB) Size() (size int64, err error) {
-	db.Mutex.RLock()
-	defer db.Mutex.RUnlock()
+	db.RLock()
+	defer db.RUnlock()
 
 	sqlString := "SELECT SUM(size) FROM cache"
 	var s int64

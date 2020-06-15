@@ -2,8 +2,8 @@ package dbcache
 
 // Delete deletes an item from the database
 func (db *DB) Delete(bucket, key string) error {
-	db.Mutex.Lock()
-	defer db.Mutex.Unlock()
+	db.Lock()
+	defer db.Unlock()
 
 	sqlString := "DELETE FROM cache WHERE bucket = ? AND key = ?"
 	_, err := db.Exec(db.Rebind(sqlString), bucket, key)
@@ -12,8 +12,8 @@ func (db *DB) Delete(bucket, key string) error {
 
 // DeleteBucket deletes all of the items in the bucket
 func (db *DB) DeleteBucket(bucket string) error {
-	db.Mutex.Lock()
-	defer db.Mutex.Unlock()
+	db.Lock()
+	defer db.Unlock()
 
 	sqlString := "DELETE FROM cache WHERE bucket = ?"
 	_, err := db.Exec(db.Rebind(sqlString), bucket)
@@ -22,8 +22,8 @@ func (db *DB) DeleteBucket(bucket string) error {
 
 // DeleteAll deletes all of the items from the cache
 func (db *DB) DeleteAll() error {
-	db.Mutex.Lock()
-	defer db.Mutex.Unlock()
+	db.Lock()
+	defer db.Unlock()
 
 	sqlString := "DELETE FROM cache"
 	_, err := db.Exec(db.Rebind(sqlString))

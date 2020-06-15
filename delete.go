@@ -2,19 +2,19 @@ package calmcache
 
 // DeleteCache deletes the cache
 func (c *Cache) DeleteCache() (err error) {
-	c.mu.Lock()
-	defer c.mu.Unlock()
+	c.Lock()
+	defer c.Unlock()
 
-	c.DB.Mutex.Lock()
-	defer c.DB.Mutex.Unlock()
+	c.DB.Lock()
+	defer c.DB.Unlock()
 
 	return c.FC.DeleteCache()
 }
 
 // DeleteBucket deletes the bucket
 func (c *Cache) DeleteBucket(bucket string) error {
-	c.mu.Lock()
-	defer c.mu.Unlock()
+	c.Lock()
+	defer c.Unlock()
 
 	err := c.DB.DeleteBucket(bucket)
 	if err != nil {
@@ -25,8 +25,8 @@ func (c *Cache) DeleteBucket(bucket string) error {
 
 // Delete deletes an item from a bucket
 func (c *Cache) Delete(bucket, key string) (OK bool, err error) {
-	c.mu.Lock()
-	defer c.mu.Unlock()
+	c.Lock()
+	defer c.Unlock()
 
 	return c.delete(bucket, key)
 }

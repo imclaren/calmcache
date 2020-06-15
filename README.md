@@ -81,8 +81,8 @@ func getAllInBucket(cachePath, bucket string) ([]cacheitem.Item, error) {
 	}
 	defer c.Close()
 	
-	c.DB.Mutex.RLock()
-	defer c.DB.Mutex.RUnlock()
+	c.RLock()
+	defer c.RUnlock()
 	sqlString := "SELECT * FROM cache WHERE bucket = ? ORDER BY key ASC"
 	var items []cacheitem.Item
 	err := c.DB.Select(&items, c.DB.Rebind(sqlString), bucket)
@@ -91,3 +91,7 @@ func getAllInBucket(cachePath, bucket string) ([]cacheitem.Item, error) {
 	}
 	return items, nil
 }
+```
+Once open, calmcache is desined be accessed concurrently.
+
+Calmcache has user accessible sync.RWMutexes at the top level (e.g. c.Lock() and c.Unlock()) and at the database and filecache levels (e.g. c.DB.Lock() and c.FC.Lock())

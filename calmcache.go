@@ -16,7 +16,7 @@ const (
 
 // Cache is the calmcache struct
 type Cache struct {
-	mu      			sync.RWMutex
+	sync.RWMutex
 	ctx 				context.Context 
 	cancel 				context.CancelFunc
 	Path 				string
@@ -58,8 +58,8 @@ func Open(path string) (c Cache, err error) {
 
 // Open opens the cache in a thread safe manner
 func (c *Cache) Open() error {
-	c.mu.Lock()
-	defer c.mu.Unlock()
+	c.Lock()
+	defer c.Unlock()
 
 	DB, err := dbcache.Open(c.DBPath, c.ctx, c.cancel)
 	if err != nil {
@@ -71,8 +71,8 @@ func (c *Cache) Open() error {
 
 // Close closes the cache
 func (c *Cache) Close() error {
-	c.mu.Lock()
-	defer c.mu.Unlock()
+	c.Lock()
+	defer c.Unlock()
 
 	return c.DB.Close()
 }

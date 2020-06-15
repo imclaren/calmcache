@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"sync"
 
 	"github.com/imclaren/sqldb"
 	"github.com/imclaren/sqldb/sqlite"
@@ -11,6 +12,7 @@ import (
 
 // DB is the cache sql database struct
 type DB struct {
+	sync.RWMutex
 	*sqldb.DB
 }
 
@@ -36,14 +38,14 @@ func initDB(ctx context.Context, cancelFunc context.CancelFunc, dbType, connectS
 		return DB{}, err
 	}
 	return DB{
-		&db,
+		sync.RWMutex{}, &db,
 	}, nil
 }
 
 // CreateTable creates the database table
 func (db *DB) CreateTable() error {
-	db.Mutex.Lock()
-	defer db.Mutex.Unlock()
+	db.Lock()
+	defer db.Unlock()
 
 	switch db.Type {
 	case "sqlite":
@@ -163,8 +165,8 @@ func indexSQLString(dbType, indexType string, isUnique bool, tableName string, i
 
 // DropTable drops the database table
 func (db *DB) DropTable() error {
-	db.Mutex.Lock()
-	defer db.Mutex.Unlock()
+	db.Lock()
+	defer db.Unlock()
 
 	_, err := db.Exec("DROP TABLE IF EXISTS cache")
 	return err

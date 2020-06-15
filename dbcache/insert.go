@@ -4,8 +4,8 @@ import "github.com/imclaren/calmcache/cacheitem"
 
 // Insert inserts an item in the database
 func (db *DB) Insert(i cacheitem.Item) error {
-	db.Mutex.Lock()
-	defer db.Mutex.Unlock()
+	db.Lock()
+	defer db.Unlock()
 
 	sqlString := "INSERT INTO cache (bucket, key, size, access_count, expires_at) VALUES (?,?,?,?,?)"
 	_, err := db.Exec(db.Rebind(sqlString),

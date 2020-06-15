@@ -7,8 +7,8 @@ import (
 
 // PruneToSize prunes the bucket to targetSize (by last accessed time)
 func (c *Cache) PruneToSize(bucket string, targetSize int64) error {
-	c.mu.Lock()
-	defer c.mu.Unlock()
+	c.Lock()
+	defer c.Unlock()
 
 	bucketSize, err := c.DB.BucketSize(bucket)
 	if err != nil {
@@ -39,8 +39,8 @@ func (c *Cache) PruneToSize(bucket string, targetSize int64) error {
 
 // PruneOlderThan prunes the bucket of all items with an access time that is earlier than the time.Duration provided
 func (c *Cache) PruneOlderThan(bucket string, d time.Duration) error {
-	c.mu.Lock()
-	defer c.mu.Unlock()
+	c.Lock()
+	defer c.Unlock()
 
 	items, err := c.DB.AllInBucketOlderThan(bucket, d)
 	if err != nil {

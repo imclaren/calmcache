@@ -2,8 +2,8 @@ package dbcache
 
 // UpdateAccessCount updates the access count of an item
 func (db *DB) UpdateAccessCount(bucket, key string) (err error) {
-	db.Mutex.Lock()
-	defer db.Mutex.Unlock()
+	db.Lock()
+	defer db.Unlock()
 
 	tx, err := db.Begin()
     if err != nil {
