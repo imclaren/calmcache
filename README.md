@@ -68,7 +68,7 @@ func putAndGetBytes(cachePath, bucket, key string, value []byte) {
 	if string(b) != string(value) {
 		return fmt.Errorf("returned value error")
 	}
-	OK, err = Delete(bucket, key)
+	OK, err = c.Delete(bucket, key)
 	if err != nil {
 		return err
 	}
