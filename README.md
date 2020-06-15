@@ -4,12 +4,17 @@ calmcache is a low memory golang disk cache ([GoDoc](https://godoc.org/github.co
 ## Example
 
 ```
+import (
+	"github.com/imclaren/calmcache"
+	"log"
+)
+
 cachePath := "/path/to/cachePath"
 bucket := "mybucket"
 key := "mykey"
 value := []byte{'a', 'b', 'c'}
 
-c, err := Open(cachePath)
+c, err := calmcache.Open(cachePath)
 if err != nil {
 	log.Fatal(err)
 }
@@ -18,24 +23,24 @@ if err != nil {
 	log.Fatal(err)
 }
 if !OK {
-	log.Fatal(fmt.Errorf("key already contains a value - delete the key first if you want to overwrite the value"))
+	log.Fatal("key already contains a value - delete the key first if you want to overwrite the value")
 }
 b, err := c.Get(bucket, key)
 if err != nil {
 	log.Fatal(err)
 }
 if b == nil {
-	log.Fatal(fmt.Errorf("key does not exist"))
+	log.Fatal("key does not exist")
 }
 if string(value) != string(b) {
-	log.Fatal(fmt.Errorf("returned value error"))
+	log.Fatal("returned value error")
 }
 OK, err = c.Delete(bucket, key)
 if err != nil {
-	return err
+	log.Fatal(err)
 }
 if !OK {
-	return fmt.Errorf("delete key error")
+	log.Fatal("delete key error")
 }
 ```
 
@@ -43,6 +48,11 @@ if !OK {
 
 calmcache allows putting bytes into the cache using an io.Reader, and getting bytes from the cache by providing access to an os.File or io.Writer.  For example:
 ```
+import (
+	"github.com/imclaren/calmcache"
+	"fmt"
+)
+
 func putAndGetBytes(cachePath, bucket, key string, value []byte) {
 	c, err := calmcache.Open(cachePath)
 	if err != nil {
@@ -56,7 +66,7 @@ func putAndGetBytes(cachePath, bucket, key string, value []byte) {
 		return err
 	}
 	if !OK {
-		log.Fatal(fmt.Errorf("key already contains a value - delete the key first if you want to overwrite the value"))
+		return fmt.Errorf("key already contains a value - delete the key first if you want to overwrite the value")
 	}
 
 	// Get
@@ -81,6 +91,14 @@ func putAndGetBytes(cachePath, bucket, key string, value []byte) {
 
 The sqlite database can be queried directly.  For example:
 ```
+import (
+	"github.com/imclaren/calmcache"
+	"github.com/imclaren/calmcache/cacheitem"
+	"github.com/imclaren/calmcache/dbcache"
+	"database/sql"
+	"fmt"
+)
+
 // getNewestInBucket returns the newest (i.e. most recently accessed) database item
 func getNewestInBucket(db *dbcache.DB, bucket string) (i *cacheitem.Item, err error) {
 	db.RLock()
