@@ -121,9 +121,12 @@ if err != nil {
 	return err
 }
 defer c.Close()
-item, err := getNewestInBucket(&c.DB, bucket)
+i, err := getNewestInBucket(&c.DB, bucket)
 if err != nil {
 	return err
+}
+if i == nil {
+	return fmt.Errorf("no items in the cache")
 }
 fmt.Println(i.Key, i.Size, i.CreatedAt, i.UpdatedAt)
 ```
