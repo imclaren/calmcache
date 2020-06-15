@@ -91,5 +91,3 @@ func getAllInBucket(cachePath, bucket string) ([]cacheitem.Item, error) {
 	}
 	return items, nil
 }
-
-
