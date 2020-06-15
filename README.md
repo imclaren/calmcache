@@ -99,7 +99,11 @@ func getAllInBucket(cachePath, bucket string) ([]cacheitem.Item, error) {
 	return items, nil
 }
 
-for _, i := range getAllInBucket("/path/to/cachePath", "mybucket") {
+items, err := getAllInBucket("/path/to/cachePath", "mybucket")
+if err != nil {
+	return err
+}
+for _, i := range items {
 	fmt.Println(i.Key, i.Size, i.CreatedAt, i.UpdatedAt)
 }
 ```
