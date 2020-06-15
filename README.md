@@ -102,7 +102,6 @@ func getAllInBucket(cachePath, bucket string) ([]cacheitem.Item, error) {
 for _, i := range getAllInBucket("/path/to/cachePath", "mybucket") {
 	fmt.Println(i.Key, i.Size, i.CreatedAt, i.UpdatedAt)
 }
-
 ```
 Once open, calmcache is designed be accessed concurrently.
 
