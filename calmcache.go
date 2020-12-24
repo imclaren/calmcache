@@ -1,9 +1,9 @@
 package calmcache
 
 import (
+	"context"
 	"path/filepath"
 	"sync"
-	"context"
 
 	"github.com/imclaren/calmcache/dbcache"
 	"github.com/imclaren/calmcache/filecache"
@@ -17,16 +17,16 @@ const (
 // Cache is the calmcache struct
 type Cache struct {
 	sync.RWMutex
-	ctx 				context.Context 
-	cancel 				context.CancelFunc
-	Path 				string
-	DBPath 				string
-	DB 					*dbcache.DB
-	FCPath				string
-	FC 					*filecache.FileCache
+	ctx    context.Context
+	cancel context.CancelFunc
+	Path   string
+	DBPath string
+	DB     *dbcache.DB
+	FCPath string
+	FC     *filecache.FileCache
 }
 
-// Open opens the and initiates the cache. 
+// Open opens and initiates the cache.
 // Note that this is not thread safe.  Use Cache.Open for thread safe openining of the Cache.
 func Open(path string) (c Cache, err error) {
 	DBPath := filepath.Join(path, DBName)
@@ -46,13 +46,13 @@ func Open(path string) (c Cache, err error) {
 	}
 	return Cache{
 		//mu: nil,
-		ctx: ctx,
+		ctx:    ctx,
 		cancel: cancel,
-		Path: path,
+		Path:   path,
 		DBPath: DBPath,
-		DB: &DB,
+		DB:     &DB,
 		FCPath: FCPath,
-		FC: &FC,
+		FC:     &FC,
 	}, nil
 }
 
@@ -76,4 +76,3 @@ func (c *Cache) Close() error {
 
 	return c.DB.Close()
 }
-
